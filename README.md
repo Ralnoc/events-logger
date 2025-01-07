@@ -1,8 +1,12 @@
 # Factorio Event Logger
 
-This mod provides an extensive event logging system for Factorio that generates formatted event logs based on the 
+This mod is a fork of [royvandongen
+Factorio-Event-Logger-Mod](https://github.com/royvandongen/Factorio-Event-Logger-Mod) which does not appear to be 
+getting updated. 
+
+It provides an event logging system for Factorio that generates formatted event logs based on events documented in the  
 [Events API](https://lua-api.factorio.com/latest/events.html), enabling server administrators and players to track 
-critical game events. The logged data is written to `script-output/ext/awflogging.out`.
+game events.
 
 ## Features
 
@@ -35,11 +39,16 @@ critical game events. The logged data is written to `script-output/ext/awfloggin
 
 ## Installation
 
+### Mod Portal Installation
+1. Search for "Events Logger" in the in-game Mod Portal.
+2. Click the "Install" button to add the mod to your game.
+
+### Manual Installation
 1. Download or clone this repository.
 2. Place the mod folder into your Factorio `mods` directory.
 3. Start Factorio, and enable the mod in the Mod Manager.
 
-## Configuration
+## Current Hooks
 
 This mod uses the following event hooks:
 
@@ -54,11 +63,11 @@ This mod uses the following event hooks:
 - `on_trigger_fired_artillery`
 - `on_console_chat`
 
-The statistics logging is performed every 10 minutes by default.
+The statistics logging is performed every 10 minutes.
 
 ## Usage
 
-All logs are saved in `script-output/ext/awflogging.out`. You can review these logs for detailed insights into player 
+All logs are saved in the standard log output. You can review these logs for detailed insights into player 
 activities, game events, and overall server health.
 
 ## License
