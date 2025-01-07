@@ -1,0 +1,17 @@
+[Unit]
+Description=Factorio Dedicated Server
+Wants=network-online.target
+After=syslog.target network.target nss-lookup.target network-online.target
+
+[Service]
+ExecStart=/opt/factorio/bin/start.sh
+WorkingDirectory=/opt/factorio/
+LimitNOFILE=100000
+ExecStop=/opt/factorio/bin/shutdown.sh $MAINPID
+User=factorio
+Group=factorio
+#Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target
