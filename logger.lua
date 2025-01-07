@@ -134,10 +134,10 @@ logging.events = {
 }
 
 logging.on_nth_tick = {
-	[60*60*60] = function() -- every 60 minutes
+	[60*60*10] = function() -- every 10 minutes
 		logStats()
 	end,
-	[60*60*60] = checkEvolution,
+	[60*60*10] = checkEvolution,
 }
 
 logging.on_init = on_init
