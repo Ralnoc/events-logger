@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+echo "Evaluating Version Information"
+R_MASTER_VERSION=$1
+echo "Latest Tag: $R_MASTER_VERSION"
+MASTER_VERSION=${R_MASTER_VERSION:-0.0.1}
+echo "Master Version: $MASTER_VERSION"
+TAGGED_VERSION=$(git tag --points-at HEAD)
+echo "Tagged Version: $TAGGED_VERSION"
+BUILD_VERSION=${TAGGED_VERSION:-$MASTER_VERSION}
+ROOT_DIR=$(pwd)
+
+echo "Build Version: $BUILD_VERSION"
+
+if [ -f ${ROOT_DIR}/build/packaging.log ]; then
+    rm ${ROOT_DIR}/build/packaging.log
+fi
+mkdir -p ${ROOT_DIR}/build
+if [[ ! -f ${ROOT_DIR}/build/factorio-event-logger_${BUILD_VERSION}.zip ]]; then
+    mkdir -p ${ROOT_DIR}/build/factorio-event-logger_${BUILD_VERSION}
+    cp ${ROOT_DIR}/*.lua ${ROOT_DIR}/*.json ${ROOT_DIR}/build/factorio-event-logger_${BUILD_VERSION}/.
+    cd ${ROOT_DIR}/build || exit 1
+    echo "Creating Build Artifact"
+    7z a ${ROOT_DIR}/build/factorio-event-logger_${BUILD_VERSION}.zip factorio-event-logger_${BUILD_VERSION} 2>&1 > ${ROOT_DIR}/build/packaging.log
+    RC=$?
+    cd ${ROOT_DIR} || exit 1
+    if [[ $RC -ne 0 ]]; then
+        echo "Failed to Create Build Artifact"
+        cat ${ROOT_DIR}/build/packaging.log
+        exit $RC
+    else
+        echo "Build Artifact Created"
+        rm -rf ${ROOT_DIR}/build/factorio-event-logger_${BUILD_VERSION}
+        exit 0
+    fi
+else
+    echo "Build Artifact Already Exists"
+    exit 2
+fi
