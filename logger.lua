@@ -8,7 +8,6 @@ local function on_pre_player_died (e)
 	end
 end
 
--- Determines and logs a leave reason for a player leaving, logs it to script-output/ext/awflogging.out
 local function on_player_left_game(e)
 	local player = game.get_player(e.player_index)
 	local reason
@@ -75,36 +74,36 @@ end
 local function on_built_entity(event)
 	-- get the corresponding data
 	local player = game.get_player(event.player_index)
-	local data = global.playerstats[player.name]
+	local data = storage.playerstats[player.name]
 	if data == nil then
 		-- format of array: {entities placed, ticks played}
-		global.playerstats[player.name] = {1, 0}
+		storage.playerstats[player.name] = {1, 0}
 	else
 		data[1] = data[1] + 1 --indexes start with 1 in lua
-		global.playerstats[player.name] = data
+		storage.playerstats[player.name] = data
 	end
 end
 
 local function on_init ()
-	global.playerstats = {}
+	storage.playerstats = {}
 end
 
 local function logStats()
 	-- log built entities and playtime of players
 	for _, p in pairs(game.players)
 	do
-		local pdat = global.playerstats[p.name]
+		local pdat = storage.playerstats[p.name]
 		if (pdat == nil) then
 				-- format of array: {entities placed, ticks played}
 				pdat = {0, p.online_time}
 				log("[STATS] " .. p.name .. " " .. 0 .. " " .. p.online_time)
-				global.playerstats[p.name] = pdat
+				storage.playerstats[p.name] = pdat
 		else
 			if (pdat[1] ~= 0 or (p.online_time - pdat[2]) ~= 0) then
 				log("[STATS] " .. p.name .. " " .. pdat[1] .. " " .. (p.online_time - pdat[2]))
 			end
 			-- update the data
-			global.playerstats[p.name] = {0, p.online_time}
+			storage.playerstats[p.name] = {0, p.online_time}
 		end
 	end
 end
