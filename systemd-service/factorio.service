@@ -4,10 +4,12 @@ Wants=network-online.target
 After=syslog.target network.target nss-lookup.target network-online.target
 
 [Service]
+Type=forking
 ExecStart=/opt/factorio/bin/start.sh
 WorkingDirectory=/opt/factorio/
 LimitNOFILE=100000
 ExecStop=/opt/factorio/bin/shutdown.sh $MAINPID
+PIDFile=/opt/factorio/server.pid
 User=factorio
 Group=factorio
 

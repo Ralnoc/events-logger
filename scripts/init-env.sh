@@ -193,8 +193,14 @@ function config_defaults() {
   fi
   debug "write path: $WRITE_DIR"
 
+  PIDFILE="${WRITE_DIR}/server.pid"
+
   if [ -z "${FIFO}" ];then
     FIFO="${WRITE_DIR}/server.fifo"
+  fi
+
+  if [ -z "${FACTORIOLOG}" ];then
+    FACTORIOLOG="${WRITE_DIR}/server.out"
   fi
 
   if [ -z "${CMDOUT}" ];then
@@ -214,6 +220,20 @@ function config_defaults() {
   return 0
 }
 
+function is_running() {
+  if [ -e "${PIDFILE}" ]; then
+    if kill -0 "$(cat "${PIDFILE}")" 2> /dev/null; then
+      debug "${SERVICE_NAME} is running with pid $(cat "${PIDFILE}")"
+      return 0
+    else
+      debug "Found ${PIDFILE}, but the server is not running. It's possible that your server has crashed"
+      debug "Check the log for details"
+      rm "${PIDFILE}" 2> /dev/null
+      return 2
+    fi
+  fi
+  return 1
+}
 
 function send_cmd(){
   NEED_OUTPUT=0
@@ -238,7 +258,7 @@ function send_cmd(){
       if [ ${NEED_OUTPUT} -eq 1 ]; then
         # search for the start marker in the log file, then follow and print the log output in real time until the end marker is found
         sleep 1
-        awk "/Player $START doesn't exist./{flag=1;next}/Player $END doesn't exist./{exit}flag" < "${CMDOUT}"
+        journalctl -q -u factorio.service --since "1 hour ago" --no-pager 2>&1 | awk "/Player $START doesn't exist./{flag=1;next}/Player $END doesn't exist./{exit}flag"
       fi
     else
       echo "${FIFO} is not a pipe!"
@@ -248,6 +268,24 @@ function send_cmd(){
     echo "Unable to send cmd to a stopped server!"
     return 1
   fi
+}
+
+function cmd_players(){
+  players=$(send_cmd -o "/p")
+  if [ -z "${players}" ]; then
+    echo "No players found!"
+    return 1
+  fi
+
+  if [ "$1" == "online" ]; then
+    echo "${players}" | grep -E '.+ \(online\)$' | sed -e 's/ (online)//g' \
+      | sed -E 's/^[A-Za-z]{3} [0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2} [^:]+: *//' \
+      | sed -E '/^Players *\([0-9]+\):$/d'
+  else
+    echo "${players}" | sed -E 's/^[A-Za-z]{3} [0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2} [^:]+: *//' \
+      | sed -E '/^Players *\([0-9]+\):$/d'
+  fi
+
 }
 
 function usage() {
@@ -284,4 +322,3 @@ function wait_pingpong() {
   until ping -c1 pingpong1.factorio.com &>/dev/null; do :; done
   until ping -c1 pingpong2.factorio.com &>/dev/null; do :; done
 }
-

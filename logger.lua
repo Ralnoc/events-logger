@@ -94,10 +94,15 @@ end
 
 local function on_console_chat(e)
 	local event_json = {}
-	local player = game.get_player(e.player_index)
-	event_json["name"] = player.name
 	event_json["event"] = "CHAT"
 	if ( e.player_index ~= nul and e.player_index ~= '' ) then
+		local player = game.get_player(e.player_index)
+		event_json["name"] = player.name
+		event_json["message"] = e.message
+		helpers.write_file("game-events.json", helpers.table_to_json(event_json) .. "\n", true)
+		log("[" .. event_json["event"] .. "] " .. event_json["name"] .. ": " .. event_json["message"])
+	else
+		event_json["name"] = "Console"
 		event_json["message"] = e.message
 		helpers.write_file("game-events.json", helpers.table_to_json(event_json) .. "\n", true)
 		log("[" .. event_json["event"] .. "] " .. event_json["name"] .. ": " .. event_json["message"])

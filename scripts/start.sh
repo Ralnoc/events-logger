@@ -31,4 +31,5 @@ if [ ${WAIT_PINGPONG} -gt 0 ]; then
   wait_pingpong
 fi
 
-tail -f ${FIFO} |${INVOCATION} ${EXE_ARGS_GLIBC}
+tail -f ${FIFO} |${INVOCATION} 2>&1 &
+echo $! > ${PIDFILE}
