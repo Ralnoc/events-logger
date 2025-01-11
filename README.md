@@ -7,32 +7,14 @@ It provides an event logging system for Factorio that generates formatted event 
 
 ## Features
 
-- **Player Deaths**  
-  Logs the death of a player, identifying the cause (PvP, environmental, etc.).
-
-- **Player Join/Leave**  
-  Tracks when players join or leave the game and logs their leave reason (e.g., quit, kicked, desync).
-
-- **Chat Logging**  
-  Records all chat messages with the sender's name.
-
-- **Research Events**  
-  Logs the start, completion, and cancellation of research projects.
-
-- **Entity Placement Tracking**  
-  Tracks and logs the number of entities placed by each player.
-
-- **Rocket Launches**  
-  Logs whenever a rocket is launched.
-
-- **Evolution Factor Monitoring**  
-  Periodically logs the enemy evolution factor.
-
-- **Artillery Events**  
-  Tracks and logs artillery triggers.
-
 - **Playtime and Statistics**  
-  Periodically logs playtime and entity placement statistics for each player.
+  Periodically logs ticks, playtime and entity placement statistics for each player.
+
+- **Event Logging**  
+  Logs the output of documented events to the console log for visibility
+
+- **JSON Output**  
+  Writes the events in JSON to a file that can be ingested by other tools.
 
 ## Installation
 
@@ -49,16 +31,30 @@ It provides an event logging system for Factorio that generates formatted event 
 
 This mod uses the following event hooks:
 
-- `on_rocket_launched`
-- `on_research_started`
-- `on_research_finished`
-- `on_research_cancelled`
-- `on_player_joined_game`
-- `on_player_left_game`
-- `on_pre_player_died`
-- `on_built_entity`
-- `on_trigger_fired_artillery`
-- `on_console_chat`
+- `on_biter_base_built`, `on_build_base_arrived`, `on_cancelled_deconstruction`,
+- `on_cancelled_upgrade`, `on_cargo_pod_finished_ascending`, `on_combat_robot_expired`,
+- `on_entity_damaged`, `on_force_cease_fire_changed`, `on_force_created`,
+- `on_force_friends_changed` `on_force_reset`, `on_forces_merged`,
+- `on_forces_merging`, `on_land_mine_armed`, `on_player_changed_force`,
+- `on_player_changed_surface`, `on_player_cheat_mode_disabled`, `on_player_cheat_mode_enabled`,
+- `on_player_created`, `on_player_demoted`, `on_player_died`,
+- `on_player_driving_changed_state`, `on_player_kicked`, `on_player_promoted`,
+- `on_player_removed`, `on_player_removed_equipment`, `on_player_respawned`,
+- `on_player_reverse_selected_area`, `on_player_rotated_entity`, `on_player_selected_area`,
+- `on_player_set_quick_bar_slot`, `on_player_setup_blueprint`, `on_player_toggled_alt_mode`,
+- `on_player_toggled_map_editor`, `on_player_trash_inventory_changed`, `on_player_unmuted`,
+- `on_player_used_capsule`, `on_player_used_spidertron_remote`, `on_pre_build`,
+- `on_pre_player_crafted_it` `on_pre_player_left_game`, `on_pre_player_mined_item`,
+- `on_pre_player_removed`, `on_pre_player_toggled_map_editor`, `on_pre_robot_exploded_cliff`,
+- `on_research_moved`, `on_research_reversed`, `on_resource_depleted`,
+- `on_robot_built_entit` `on_robot_built_tile`, `on_robot_exploded_cliff`,
+- `on_robot_mined`, `on_robot_mined_entity`, `on_robot_mined_tile`,
+- `on_robot_pre_mine` `on_rocket_launch_ordered`, `on_sector_scanned`,
+- `on_selected_entity_changed`, `on_space_platform_built_entity`, `on_space_platform_built_tile`,
+- `on_space_platform_changed_state`, `on_space_platform_mined_entity`, `on_space_platform_mined_item`,
+- `on_space_platform_mined_tile`, `on_space_platform_pre_mined`, `on_spider_command_completed`,
+- `on_surface_cleared`, `on_technology_effects_reset`, `on_train_changed_state`,
+- `on_train_created`, `on_train_schedule_changed`, `on_worker_robot_expired`,
 
 The statistics logging is performed every 10 minutes.
 
