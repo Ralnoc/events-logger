@@ -285,9 +285,6 @@ end
 local function log_tick_over_time()
 	local event_json = {}
 	event_json["event"] = "TICK"
-	if game.ticks_players then
-		event_json["ticks_players"] = game.ticks_players
-	end
 	event_json["current_map_Tick"] = game.tick
 	helpers.write_file("game-events.json", helpers.table_to_json(event_json) .. "\n", true)
 	log("[" .. event_json["event"] .. "] " .. event_json["tick"])
