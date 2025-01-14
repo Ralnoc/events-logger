@@ -5,5 +5,6 @@
   "author": "James Boylan",
   "factorio_version": "2.0",
   "homepage": "https://github.com/Ralnoc/factorio-events-logger",
+  "description": "Events Logger provides an event logging system for Factorio that generates formatted event logs based on events documented in the Events API, enabling server administrators to track game events, and build tooling around it.",
   "dependencies": ["base", "space-age"]
 }

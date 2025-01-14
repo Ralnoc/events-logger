@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/factorio-events-logger.iml" filepath="$PROJECT_DIR$/.idea/factorio-events-logger.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../factorio-official/factorio-official.iml" filepath="$PROJECT_DIR$/../factorio-official/factorio-official.iml" />
     </modules>
   </component>
 </project>
