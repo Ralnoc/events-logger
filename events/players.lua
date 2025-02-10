@@ -125,6 +125,20 @@ function on_player_repaired_entity(event)
     factorio_log(event_json["event"], event_json["name"] .. event_json["entity"]["name"])
 end
 
+function on_player_changed_surface(event)
+    local event_json = {}
+    event_json["player_name"] = game.get_player(event.player_index).name
+    event_json["name"] = event.name
+    event_json["event"] = "CHANGED_SURFACE"
+    if event.surface_index then
+        event_json["previous_surface"] = game.get_surface(event.surface_index).name
+    end
+	event_json["player_surface"] = game.get_player(event.player_index).surface.name
+    event_json["tick"] = event.tick
+    write_game_event_json(event_json)
+    factorio_log(event_json["event"], "Player: " .. event_json["player_name"] .. " Surface: " .. event_json["player_surface"])
+end
+
 events[defines.events.on_pre_player_died] = on_pre_player_died
 events[defines.events.on_player_left_game] = on_player_left_game
 events[defines.events.on_player_joined_game] = on_player_joined_game
@@ -133,3 +147,4 @@ events[defines.events.on_player_unbanned] = on_player_unbanned
 events[defines.events.on_character_corpse_expired] = on_character_corpse_expired
 events[defines.events.on_picked_up_item] = on_picked_up_item
 events[defines.events.on_player_repaired_entity] = on_player_repaired_entity
+events[defines.events.on_player_changed_surface] = on_player_changed_surface
